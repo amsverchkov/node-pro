@@ -9,10 +9,8 @@ const [,,firstNum, secondNum, operation] = process.argv;
 const myEmiter = new EventEmiter();
 
 myEmiter.on('error', errorHandler);
-
-const errors = [];
-
-if (!validateParams(firstNum, secondNum, operation)) {
+const errors = getValidationErrors(firstNum, secondNum, operation);
+if (errors.length > 0) {
     myEmiter.emit(
         'error', 
         new Error(errors.join(' '))    
@@ -39,7 +37,10 @@ switch (operation) {
 
 console.log(`Operation result is: ${result}`);
 
-function validateParams(firstNum, secondNum, operation) {
+function getValidationErrors(firstNum, secondNum, operation) {
+    
+    let errors = [];
+
     if (!firstNum || !secondNum || !operation) {
         errors.push('Not all required params specified: firstNum, secondNum and operation are required.');
     }
@@ -52,11 +53,7 @@ function validateParams(firstNum, secondNum, operation) {
         errors.push('Operation should be one of: add, multiply, divide, subtract.');
     }
 
-    if (errors.length > 0) {
-        return false;
-    }
-
-    return true;
+    return errors;
 }
 
 function errorHandler(error) {
