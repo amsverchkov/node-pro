@@ -1,7 +1,7 @@
 const complexCalculate = require('./calc-sum');
 const splitArr = require('./split-arr');
-const {performance, PerformanceObserver} = require('perf_hooks');
-const {Worker} = require('worker_threads');
+const { performance, PerformanceObserver } = require('perf_hooks');
+const { Worker } = require('worker_threads');
 
 const perfObserver = new PerformanceObserver((list) => {
     list.getEntries().forEach((entry) => {
@@ -9,7 +9,7 @@ const perfObserver = new PerformanceObserver((list) => {
     })
 });
 
-perfObserver.observe({entryTypes: ['measure']});
+perfObserver.observe({ entryTypes: ['measure'] });
 
 
 function sqr(array) {
@@ -19,22 +19,21 @@ function sqr(array) {
 const intitArr = [...Array(30000000).keys()];
 
 performance.mark('startCalc');
-const result = complexCalculate({arr: intitArr});
+const result = complexCalculate({ arr: intitArr });
 performance.mark('stopCalc');
 performance.measure('calcSum', 'startCalc', 'stopCalc');
 
 const calcWithWorker = (intitArr) => {
     return new Promise((resolve, reject) => {
         const myWorker = new Worker('./worker.js', {
-            workerData: {arr: intitArr}
+            workerData: { arr: intitArr }
         })
         myWorker.on('message', (msg) => resolve(msg));
     })
 }
 
+
 const calcWithFewWorkers = async (intitArr) => {
-    
-    
     splitedIntitArr = splitArr(intitArr, 16);
     performance.mark('startCalcWorkers');
     const results = await Promise.all([
@@ -55,7 +54,7 @@ const calcWithFewWorkers = async (intitArr) => {
         calcWithWorker(splitedIntitArr[14]),
         calcWithWorker(splitedIntitArr[15]),
     ]);
-    
+
     performance.mark('stopCalcWorkers');
     performance.measure('calcSumWorkers', 'startCalcWorkers', 'stopCalcWorkers');
 }
