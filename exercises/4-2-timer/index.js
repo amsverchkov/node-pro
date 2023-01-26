@@ -11,29 +11,30 @@ myEmitter.on('result', (result) => {
 });
 
 const milliseconds = getMillisecondsFromCommandLineArgs();
-//console.log(milliseconds);
 setTimeout(() => {
     myEmitter.emit('result', milliseconds)
 }, milliseconds);
 
 
 function getMillisecondsFromCommandLineArgs() {
-    let milliseconds = 0; 
-    for (let i = 2; i < args.length; i++) {
+    let milliseconds = 0;
+    const startCommandLineArgs = 2;
+    for (let i = startCommandLineArgs; i < args.length; i++) {
         const arg = args[i];
         if (!validateArg(arg)) {
             myEmitter.emit('error', new Error(`${arg} is not a valid param, please use at the end of param h, m, s`));
             return;
         }
-        switch (arg.slice(-1)) {
+        const [timeType, time] = [arg.slice(-1), parseFloat(arg.slice(0, -1))];
+        switch (timeType) {
             case 'h':
-                milliseconds += parseFloat(arg.slice(0, -1)) * 1000 * 60 * 60;
+                milliseconds += time * 1000 * 60 * 60;
             break;
             case 'm':
-                milliseconds += parseFloat(arg.slice(0, -1)) * 1000 * 60;
+                milliseconds += time * 1000 * 60;
             break;
             case 's':
-                milliseconds += parseFloat(arg.slice(0, -1)) * 1000;
+                milliseconds += time * 1000;
             break;
         }
 
