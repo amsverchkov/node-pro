@@ -9,6 +9,7 @@ let [,,firstNum, secondNum, operation] = process.argv;
 const myEmiter = new EventEmiter();
 
 myEmiter.on('error', errorHandler);
+
 const errors = getValidationErrors(firstNum, secondNum, operation);
 if (errors.length > 0) {
     myEmiter.emit(
