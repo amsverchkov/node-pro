@@ -1,5 +1,5 @@
 const getDivideResult = (firstNum, secondNum) => {
-    return parseFloat(firstNum) / parseFloat(secondNum);
+    return firstNum / secondNum;
 }
 
-module.exports.getDivideResult = getDivideResult;
+module.exports.getResult = getDivideResult;

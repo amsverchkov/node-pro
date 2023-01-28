@@ -4,7 +4,7 @@ const multiply = require('./multiply.js');
 const subtract = require('./subtract.js');
 const divide = require('./divide.js');
 
-const [,,firstNum, secondNum, operation] = process.argv;
+let [,,firstNum, secondNum, operation] = process.argv;
 
 const myEmiter = new EventEmiter();
 
@@ -18,24 +18,29 @@ if (errors.length > 0) {
     return;
 }
 
-let result;
+[firstNum, secondNum] = castParamsToFloat([firstNum, secondNum]);
 
-switch (operation) {
-    case 'add':
-        result = add.getAddResult(firstNum, secondNum);
-    break;
-    case 'divide':
-        result = divide.getDivideResult(firstNum, secondNum);
-    break;
-    case 'multiply':
-        result = multiply.getMultiplyResult(firstNum, secondNum);
-    break;
-    case 'subtract':
-        result = subtract.getSubstractResult(firstNum, secondNum);
-    break;
-}
+const result = getResult(operation, firstNum, secondNum);
 
 console.log(`Operation result is: ${result}`);
+
+function getResult(operation, firstNum, secondNum) {
+    switch (operation) {
+        case 'add':
+            return add.getResult(firstNum, secondNum);
+        case 'divide':
+            return divide.getResult(firstNum, secondNum);
+        case 'multiply':
+            return multiply.getResult(firstNum, secondNum);
+        case 'subtract':
+            return subtract.getResult(firstNum, secondNum);
+    }
+}
+
+function castParamsToFloat(params)
+{
+    return params.map(param => parseFloat(param));
+}
 
 function getValidationErrors(firstNum, secondNum, operation) {
     
@@ -58,4 +63,10 @@ function getValidationErrors(firstNum, secondNum, operation) {
 
 function errorHandler(error) {
     console.log(`Error: ${error.message}`);
+}
+
+module.exports = {
+    getValidationErrors: getValidationErrors,
+    castParamsToFloat: castParamsToFloat,
+    getResult: getResult,
 }

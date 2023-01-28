@@ -1,5 +1,5 @@
 const getSubstractResult = (firstNum, secondNum) => {
-    return parseFloat(firstNum) - parseFloat(secondNum);
+    return firstNum - secondNum;
 }
 
-module.exports.getSubstractResult = getSubstractResult;
+module.exports.getResult = getSubstractResult;

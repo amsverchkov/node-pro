@@ -1,4 +1,9 @@
 const EventEmiter = require('events');
+const {getValidationErrors, castParamsToFloat} = require('../4-1-calc/index');
+const {add} = require('../4-1-calc/add');
+const {divide} = require('../4-1-calc/divide');
+const {multiply} = require('../4-1-calc/multiply');
+const {subtract} = require('../4-1-calc/subtract');
 
 let [,,firstNum, secondNum, operation] = process.argv;
 
@@ -6,9 +11,30 @@ const myEmiter = new EventEmiter();
 
 myEmiter.on('error', errorHandler);
 
-const errors = [];
+myEmiter.on('result', (result) => {
+    console.log(`Operation result is: ${result}`);
+})
 
-if (!validateParams(firstNum, secondNum, operation)) {
+myEmiter.on('add', (firstNum, secondNum) => {
+    myEmiter.emit('result', add.getResult(firstNum, secondNum));
+});
+
+myEmiter.on('multiply', (firstNum, secondNum) => {
+    myEmiter.emit('result', multiply.getResult(firstNum, secondNum));
+});
+
+
+myEmiter.on('divide', (firstNum, secondNum) => {
+    myEmiter.emit('result', divide.getResult(firstNum, secondNum));
+});
+
+
+myEmiter.on('subtract', (firstNum, secondNum) => {
+    myEmiter.emit('result', subtract.getResult(firstNum, secondNum));
+});
+
+const errors = getValidationErrors(firstNum, secondNum, operation);
+if (errors.length > 0) {
     myEmiter.emit(
         'error', 
         new Error(errors.join(' '))    
@@ -16,60 +42,9 @@ if (!validateParams(firstNum, secondNum, operation)) {
     return;
 }
 
-let result;
-firstNum = parseFloat(firstNum);
-secondNum = parseFloat(secondNum);
-
-myEmiter.on('result', (result) => {
-    console.log(`Operation result is: ${result}`);
-})
-
-myEmiter.on('add', (firstNum, secondNum) => {
-    result = firstNum + secondNum;
-    myEmiter.emit('result', result);
-});
-
-myEmiter.on('multiply', (firstNum, secondNum) => {
-    result = firstNum * secondNum;
-    myEmiter.emit('result', result);
-});
-
-
-myEmiter.on('divide', (firstNum, secondNum) => {
-    result = firstNum / secondNum;
-    myEmiter.emit('result', result);
-});
-
-
-myEmiter.on('subtract', (firstNum, secondNum) => {
-    result = firstNum - secondNum;
-    myEmiter.emit('result', result);
-});
+[firstNum, secondNum] = castParamsToFloat(firstNum, secondNum);
 
 myEmiter.emit(operation, firstNum, secondNum);
-
-
-
-
-function validateParams(firstNum, secondNum, operation) {
-    if (!firstNum || !secondNum || !operation) {
-        errors.push('Not all required params specified: firstNum, secondNum and operation are required.');
-    }
-
-    if (!Number(firstNum) || !Number(secondNum)) {
-        errors.push('FirsNum and secondNum should be numbers.');
-    }
-
-    if (!['add', 'multiply', 'divide', 'subtract'].includes(operation)) {
-        errors.push('Operation should be one of: add, multiply, divide, subtract.');
-    }
-
-    if (errors.length > 0) {
-        return false;
-    }
-
-    return true;
-}
 
 function errorHandler(error) {
     console.log(`Error: ${error.message}`);

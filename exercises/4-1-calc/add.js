@@ -1,5 +1,5 @@
 const getAddResult = (firstNum, secondNum) => {
-    return parseFloat(firstNum) + parseFloat(secondNum);
+    return firstNum + secondNum;
 }
 
-module.exports.getAddResult = getAddResult;
+module.exports.getResult = getAddResult;

@@ -1,5 +1,5 @@
 const getMultiplyResult = (firstNum, secondNum) => {
-    return parseFloat(firstNum) * parseFloat(secondNum);
+    return firstNum * secondNum;
 }
 
-module.exports.getMultiplyResult = getMultiplyResult;
+module.exports.getResult = getMultiplyResult;
