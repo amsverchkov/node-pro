@@ -3,21 +3,15 @@ import dedent from 'dedent-js';
 import { OpenDataWeatherResponse } from './api.service.js';
 
 const printError = (error: string) => {
-    console.log(chalk.red('ERROR:') + ' ' + error);
+    console.log(`${chalk.red('ERROR:')} ${error}`);
 }
 
 
 const printSuccess = (message: string) => {
-    console.log(chalk.green('Success:') + ' ' + message);
+    console.log(`${chalk.green('Success:')} ${message}`);
 }
 
 const printHelp = (printInConsole: boolean = true): object | void => {
-    const output = dedent`${chalk.cyan('Help: ')} 
-    Без параметров - вывод погоды
-    -s [CITY] для установки города
-    -h для вывода помощи
-    -t [API_KEY] для установки токена
-    `;
     if (printInConsole) {
         console.log(
             dedent`${chalk.cyan('Help: ')} 
@@ -34,13 +28,6 @@ const printHelp = (printInConsole: boolean = true): object | void => {
             '/add_token [post]': 'для установки токена, параметры : token(string, required)',
             '/get_weather [get]': 'для поиска погоды, параметры: lat(float, required) lon(float, required)',
         }
-
-
-        // `Без параметров - вывод погоды
-        // -s [CITY] для установки города
-        // -h для вывода помощи
-        // -t [API_KEY] для установки токена
-        // `;
     }
 }
 
