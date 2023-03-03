@@ -1,0 +1,31 @@
+{
+  "name": "weather-cli-kartoteka",
+  "version": "1.0.0",
+  "description": "Cli for getting weather",
+  "main": "weather.js",
+  "bin": {
+    "weather": "weather.js"
+  },
+  "type": "module",
+  "scripts": {
+    "prepare": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node weather.js"
+  },
+  "keywords": [
+    "weather",
+    "cli"
+  ],
+  "author": "Alex <risunochki@uandex.ru>",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.2.6",
+    "chalk": "^5.2.0",
+    "dedent-js": "^1.0.1",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.13.0"
+  }
+}
